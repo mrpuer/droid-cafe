@@ -1,0 +1,28 @@
+<div class="row" data-ng-hide="$ctrl.isLogged">
+  <form name="$ctrl.clientLoginForm" class="col s6">
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">account_circle</i>
+        <input data-ng-model="$ctrl.client.name" placeholder="Type username" id="user_name" type="text" class="validate" name="name">
+        <label for="user_name">User Name</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">account_circle</i>
+        <input data-ng-model="$ctrl.client.email" placeholder="Type your email" id="email" type="email" class="validate" name="email" required>
+        <label for="email">Email</label>
+      </div>
+    </div>
+    <div class="row">
+          <button class="btn waves-effect waves-light" data-ng-click="$ctrl.login($ctrl.client)">Login
+                  <i class="material-icons right">send</i>
+                </button>
+      </div>
+  </form>
+</div>
+<div data-ng-show="$ctrl.isLogged">
+<div>{{'Welcome,' + $ctrl.clientInfo.name }}</div>
+<div>Balance: {{ $ctrl.clientInfo.balance }} CR</div>
+<div><a data-ng-click="$ctrl.addBalance()" class="waves-effect waves-light btn"><i class="material-icons left">monetization_on</i>Add Balance</a></div>
+</div>

@@ -4,9 +4,10 @@ angular.module('cafeApp', [
 .config(($stateProvider, $locationProvider, $urlRouterProvider) => {
     $stateProvider
         .state({
-            name: 'clientHome',
+            name: 'clientPage',
             url: '/',
-            template: '<client-component></client-component>',
+            templateUrl: 'scripts/ClientPageCtrl/ClientPageCtrl.html',
+            controller: 'ClientPageCtrl as vm'
         })
 
     $locationProvider.html5Mode({enabled:true,requireBase:false})
