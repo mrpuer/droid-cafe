@@ -43,6 +43,7 @@ cafeAPIv1.get('/menu/:dish', orders.getMenuItem);
 cafeAPIv1.post('/orders', orders.addOrder);
 cafeAPIv1.get('/orders/', orders.getAllOrders);
 cafeAPIv1.get('/orders/:clientId', orders.getClientOrders);
+cafeAPIv1.put('/orders/:id', orders.editOrder);
 
 app.use('/api/v1', cafeAPIv1);
 http.listen(PORT, () => console.log('Server is running...'));

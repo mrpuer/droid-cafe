@@ -1,4 +1,4 @@
-<div class="row" data-ng-hide="$ctrl.isLogged">
+<div class="row" data-ng-if="!$ctrl.isLogged">
     <form name="clientLoginForm" class="col s6">
       <div class="row">
         <div class="input-field col s12">
@@ -21,7 +21,20 @@
         </div>
     </form>
   </div>
-  <div data-ng-show="$ctrl.isLogged">
+
+  <!-- <div data-ng-if="$ctrl.isLogged && !$ctrl.clientInfo._id" class="preloader-wrapper small active">
+      <div class="spinner-layer spinner-green-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div> -->
+
+  <div data-ng-if="$ctrl.isLogged">
   <div>{{'Welcome, ' + $ctrl.clientName }}</div>
   <div>Balance: {{ $ctrl.clientInfo.balance }} GC</div>
   <div><a data-ng-click="$ctrl.balance()" class="waves-effect waves-light btn-large"><i class="material-icons left">monetization_on</i>Add Balance</a></div>

@@ -58,12 +58,21 @@ exports.getClientOrders = (req, res) => {
   Orders.find({userId: req.params.clientId}, (err, orders) => {
     if (err) throw err;
     res.send(orders);
-  })
+  });
 };
 
 exports.getAllOrders = (req, res) => {
   Orders.find({}, (err, orders) => {
     if (err) throw err;
     res.send(orders);
-  })
+  });
+};
+
+exports.editOrder = (req, res) => {
+  console.log(req.params.id);
+  Orders.updateOne({ _id: req.params.id }, { $set: req.body.change },  (err, newData) => {
+    if (err) throw err;
+    console.log(newData);
+    res.send(newData);
+  });
 };

@@ -11,6 +11,9 @@ angular
       addOrder: function(data) {
         return $http.post('/api/v1/orders/', data);
       },
+      editOrder: function(data) {
+        return $http.put(`/api/v1/orders/${data._id}`, data);
+      },
       getUserOrders: function(id) {
         return $http.get(`/api/v1/orders/${id}`);
       },

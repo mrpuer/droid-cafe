@@ -2,21 +2,14 @@
 
 angular
     .module('cafeApp')
-    .controller('KitchenPageCtrl', function(OrdersService, mySocket, $scope) {
+    .controller('KitchenPageCtrl', function(OrdersService, mySocket) {
       var vm = this;
       vm.orders = {};
 
-      $scope.$on('connection', function(socket){
-        return alert('user connected');
-      });
-      mySocket.on('testing', function(socket){
-        return alert('testing emit');
-      });
-      mySocket.on('connection', function(socket){
-        return alert('testing emit');
+      mySocket.on('connect', function(socket){
+        vm.getAllOrders();
       });
       vm.getAllOrders = function() {
-        mySocket.emit('testing');
         OrdersService.getAllOrders().then(function(orders) {
           vm.orders = orders.data;
           vm.orders.map(function(order) {
@@ -28,7 +21,19 @@ angular
         }, function(err) { throw err });
       };
 
-      vm.$onInit = function() {
-        vm.getAllOrders();
+      vm.addToCooking = function(order) {
+        const newData = { 
+          _id: order._id,
+          change: {
+            status: 'Cooking'
+          }
+        };
+        OrdersService.editOrder(newData).then(function(orderNewData) {
+          
+        }, function(err) { throw err });
       };
+
+      // vm.$onInit = function() {
+      //   vm.getAllOrders();
+      // };
     });
