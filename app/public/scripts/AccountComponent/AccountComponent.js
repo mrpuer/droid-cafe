@@ -1,22 +1,21 @@
-angular
-  .module('cafeApp')
-  .component('accountComponent', {
-    templateUrl: 'scripts/AccountComponent/AccountComponent.html',
-    controller: function (ClientService, $timeout) {
-      this.isLogged = ClientService.getClientStatus();
-      this.clientInfo = ClientService.getClientInfo();
-          
-      // нажимаем кнопку входа в аккаунт
-      this.login = function(data){
-          ClientService.getClient(data);
-          $timeout(() => {
-            this.clientInfo = ClientService.getClientInfo();
-            this.isLogged = ClientService.getClientStatus();
-          }, 500);
-              
-      };
-      this.addBalance = function(){
+angular.module("cafeApp").component("accountComponent", {
+  templateUrl: "scripts/AccountComponent/AccountComponent.html",
+  bindings: {
+    clientInfo: "<",
+    isLogged: "<",
+    clientLogin: "&",
+    addBalance: "&",
+    clientName: '<'
+  },
+  controller: function() {
+    var $ctrl = this;
 
-      }
-    }
-  });
+    $ctrl.login = function(data) {
+      $ctrl.clientLogin({ client: data });
+    };
+
+    $ctrl.balance = function() {
+      $ctrl.addBalance();
+    };
+  }
+});

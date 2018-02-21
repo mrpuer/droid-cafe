@@ -8,19 +8,17 @@ db.once('open', function() {
   console.log('DB connection open...');
 });
 
-const clientsSchema = mongoose.Schema({
-    name: String,
+const clientSchema = mongoose.Schema({
     email: String,
     balance: Number,
     orders: Array
 });
 
-const Clients = mongoose.model('clients', clientsSchema);
+const Client = mongoose.model('clients', clientSchema);
 
 // GET existing
 exports.getClient = (req, res) => {
-    console.log(req.params);
-    Clients.find({ email: req.params.email}, (err, user) => {
+    Client.find({ email: req.params.email}, (err, user) => {
         if (err) throw err;
         res.send(user);
     });
@@ -28,8 +26,7 @@ exports.getClient = (req, res) => {
 
 // POST add
 exports.addClient = (req, res) => {
-    const newClient = new Clients({ 
-        name: req.body.name,
+    const newClient = new Client({ 
         email: req.body.email,
         balance: 100,
         orders: []
@@ -44,5 +41,8 @@ exports.addClient = (req, res) => {
 };
 
 exports.editClient = (req, res) => {
-      
+      Client.update({ email: req.params.email}, req.body, (err, newUserData) => {
+        if (err) throw err;
+        res.send(newUserData);
+    });
 };

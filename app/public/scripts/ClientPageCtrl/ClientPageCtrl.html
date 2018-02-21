@@ -1,15 +1,15 @@
-<div class="row center-align valign-wrapper">
-  <div class="col s6 green lighten-3">
+<div class="row white-text">
+  <div class="col s6 blue darken-4">
     <div class="container">
       <h2 class="center-align valign-wrapper">Account Area</h2>
-      <account-component></account-component>
+      <account-component client-info="vm.clientInfo" is-logged="vm.isLogged" client-login="vm.login(client)" add-balance="vm.addBalance()" client-name="vm.clientName"></account-component>
     </div>
   </div>
 
-  <div class="col s6 cyan darken-3">
+  <div class="col s6 teal darken-1">
     <div class="container">
       <h2 class="center-align valign-wrapper">Orders Area</h2>
-      <orders-component></orders-component>
+          <orders-component is-logged="vm.isLogged" client-info="vm.clientInfo" client-orders="vm.clientOrders" add-order="vm.addOrderToUser(orderId)"></orders-component>
     </div>
   </div>
 </div>

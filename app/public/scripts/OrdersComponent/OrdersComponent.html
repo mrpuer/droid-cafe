@@ -1,2 +1,67 @@
 <div data-ng-hide="$ctrl.isLogged">Register first, to make new orders.</div>
-<div data-ng-show="$ctrl.isLogged">There are no active orders</div>
+<div data-ng-show="$ctrl.isLogged">
+<h4 data-ng-if="!$ctrl.clientInfo.orders.length">You are not have any orders</h4>
+<div data-ng-if="$ctrl.clientInfo.orders.length">
+  <h4>Your orders:</h4>
+  <ul class="collection">
+      <li class="collection-item avatar" data-ng-repeat="order in $ctrl.clientOrders">
+        <img data-ng-src="{{order.dishInfo.image}}" alt="" class="circle">
+        <span class="title">{{order.dishInfo.title}}</span>
+      <p><span class="new badge blue" data-badge-caption="">{{order.status}}</span>
+        </p>
+      </li>
+      </ul>
+</div>
+<div>
+   <!-- Modal Trigger -->
+<a class="waves-effect waves-light btn-large modal-trigger" data-ng-click="$ctrl.getMenu()" href="#modal1"><i class="material-icons left">reorder</i>Add Order</a>
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal bottom-sheet">
+<div class="modal-content">
+<h4>Cafe Menu</h4>
+
+<!-- <ul class="collection">
+    <li data-ng-repeat="dish in $ctrl.cafeMenu" class="collection-item avatar">
+      <img data-ng-src="{{dish.image}}" alt="" class="circle">
+      <span class="title">{{dish.title}}</span>
+      <p>Rating: {{dish.rating}}<br>
+        Price: {{dish.price}}<br>
+        Ingredients: <span class="new badge" data-badge-caption="{{ingredient}}" data-ng-repeat="ingredient in dish.ingredients track by $index"></span>
+      </p>
+      <a data-ng-disabled="dish.price > $ctrl.clientInfo.balance" data-ng-click="$ctrl.addOrderAll(dish)" href="#" class="waves-effect waves-light btn"><i class="material-icons left">playlist_add</i>want this</a>
+      <p data-ng-if="dish.price > $ctrl.clientInfo.balance">For order top up your account for {{dish.price - $ctrl.clientInfo.balance}} Credits</p>
+    </li>
+</ul> -->
+
+<div class="row">
+    <div class="col s12 m6" data-ng-repeat="dish in $ctrl.cafeMenu">
+      <div class="card medium">
+        <div class="card-image">
+          <img data-ng-src="{{dish.image}}">
+          <span class="card-title">{{dish.title}}</span>
+        </div>
+        <div class="card-content">
+            <p>Rating: {{dish.rating}}, Price: {{dish.price}}<br>
+              Ingredients: <span class="new badge" data-badge-caption="{{ingredient}}" data-ng-repeat="ingredient in dish.ingredients track by $index"></span>
+            </p><br>
+            <p>
+                <a data-ng-disabled="dish.price > $ctrl.clientInfo.balance" data-ng-click="$ctrl.addOrderAll(dish)" href="#" class="waves-effect waves-light btn"><i class="material-icons left">playlist_add</i>want this</a>
+                <p data-ng-if="dish.price > $ctrl.clientInfo.balance">For order top up your account for {{dish.price - $ctrl.clientInfo.balance}} Credits</p>
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Close Menu</a>
+</div>
+</div>
+</div>
+</div>
+<script>  $(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+  });</script>
