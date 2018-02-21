@@ -1,12 +1,12 @@
 <div class="row white-text">
-  <div class="col s6 blue darken-4">
+  <div class="col s6 blue darken-4 z-depth-2 hoverable">
     <div class="container">
-      <h2 class="center-align valign-wrapper">Account Area</h2>
+      <div><h2 class="center-align valign-wrapper">Account Area</h2></div>
       <account-component client-info="vm.clientInfo" is-logged="vm.isLogged" client-login="vm.login(client)" add-balance="vm.addBalance()" client-name="vm.clientName"></account-component>
     </div>
   </div>
 
-  <div class="col s6 teal darken-1">
+  <div class="col s6 teal darken-1 z-depth-2 hoverable">
     <div class="container">
       <h2 class="center-align valign-wrapper">Orders Area</h2>
           <orders-component is-logged="vm.isLogged" client-info="vm.clientInfo" client-orders="vm.clientOrders" add-order="vm.addOrderToUser(orderId)"></orders-component>

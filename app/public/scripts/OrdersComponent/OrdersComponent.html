@@ -6,8 +6,8 @@
   <ul class="collection">
       <li class="collection-item avatar" data-ng-repeat="order in $ctrl.clientOrders">
         <img data-ng-src="{{order.dishInfo.image}}" alt="" class="circle">
-        <span class="title">{{order.dishInfo.title}}</span>
-      <p><span class="new badge blue" data-badge-caption="">{{order.status}}</span>
+        <span class="title blue-grey-text text-darken-4">{{order.dishInfo.title}}</span>
+      <p><span class="new badge blue" data-badge-caption="{{order.status}}"></span>
         </p>
       </li>
       </ul>
