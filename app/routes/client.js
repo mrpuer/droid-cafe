@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/cafe');
+mongoose.connect('mongodb://heroku_5sn59lz3:ek32fopuq199gp113qf24glkt1@ds145438.mlab.com:45438/heroku_5sn59lz3');
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'DB connection error!'));
