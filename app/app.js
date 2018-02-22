@@ -15,11 +15,20 @@ const client = require('./routes/client');
 const orders = require('./routes/orders');
 const cafeAPIv1 = express.Router();
 
+// socket server
 io.on('connection', (socket) => {
   console.log('user connected');
-  socket.on('newEvent', function() {
+  socket.on('orderUptated', function() {
     console.log('Server receive update order event!');
-    io.emit('newEvent');
+    io.emit('orderUptated');
+  });
+  socket.on('userOrders', function() {
+    console.log('Server receive event to get user orders!');
+    io.emit('userOrders');
+  });
+  socket.on('newOrder', function(price) {
+    console.log('Server receive event of new order!');
+    io.emit('newOrder', price);
   });
 });
 

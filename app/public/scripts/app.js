@@ -22,7 +22,6 @@ angular.module('cafeApp', [
 })
 .factory('mySocket', function (socketFactory) {
     mySocket = socketFactory();
-
     return mySocket;
 });
 
