@@ -1,12 +1,11 @@
-'use strict';
-
 angular
     .module('cafeApp')
     .controller('KitchenPageCtrl', function(OrdersService, mySocket) {
       var vm = this;
       vm.orders = {};
 
-      mySocket.on('connect', function(socket){
+      mySocket.on('connect', function(){
+        mySocket.emit('hello');
         vm.getAllOrders();
       });
       vm.getAllOrders = function() {
@@ -21,15 +20,15 @@ angular
         }, function(err) { throw err });
       };
 
-      vm.addToCooking = function(order) {
+      vm.addToCooking = function(order, status) {
         const newData = { 
           _id: order._id,
           change: {
-            status: 'Cooking'
+            status
           }
         };
         OrdersService.editOrder(newData).then(function(orderNewData) {
-          
+          vm.getAllOrders();
         }, function(err) { throw err });
       };
 

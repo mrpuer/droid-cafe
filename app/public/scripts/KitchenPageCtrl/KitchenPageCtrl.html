@@ -13,9 +13,12 @@
     <li class="collection-item avatar">
       <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
       <span class="title">{{order.fullInfo.title}}</span>
-      <span data-ng-click="vm.addToCooking(order)" class="new badge blue" data-badge-caption="">
+      <span class="new badge red" data-badge-caption="">
         {{order.status}}
       </span>
+      <span data-ng-click="vm.addToCooking(order, 'Cooking')" class="new badge red" data-badge-caption="">
+          Start Cooking
+        </span>
     </li>
   </ul>
 </div>
@@ -30,6 +33,9 @@
                   <span data-ng-click="vm.addToCooking(order)" class="new badge blue" data-badge-caption="">
                     {{order.status}}
                   </span>
+                  <span data-ng-click="vm.addToCooking(order, 'Delivering')" class="new badge blue" data-badge-caption="">
+                      Done
+                    </span>
                 </li>
               </ul>
             </div>

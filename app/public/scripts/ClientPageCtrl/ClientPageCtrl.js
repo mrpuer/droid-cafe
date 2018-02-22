@@ -1,14 +1,15 @@
-'use strict';
-
 angular
     .module('cafeApp')
-    .controller('ClientPageCtrl', function(ClientService, OrdersService) {
+    .controller('ClientPageCtrl', function(ClientService, OrdersService, mySocket) {
       var vm = this;
       vm.clientInfo = {};
       vm.clientOrders = {};
       vm.clientName = 'Dear Client';
       vm.isLogged = false;
 
+      mySocket.on('hello', function(socket){
+        console.log('i say hello')
+      });
       vm.login = function(data) {
         if (data.name) vm.clientName = data.name;
             ClientService.getClient(data.email).then(

@@ -18,7 +18,7 @@ const cafeAPIv1 = express.Router();
 // io.on('connection', (socket) => {
 //   console.log('user connected');
 //   socket.on('disconnect', () => {
-//     console.log('user dsconnected');
+//     console.log('user disconnected');
 //   });
 // });
 
