@@ -5,7 +5,10 @@ angular
       vm.orders = {};
 
       mySocket.on('connect', function(){
-        mySocket.emit('hello');
+        vm.getAllOrders();
+      });
+      mySocket.on('newEvent', function(){
+        console.log('i know about new event!');
         vm.getAllOrders();
       });
       vm.getAllOrders = function() {
@@ -29,6 +32,7 @@ angular
         };
         OrdersService.editOrder(newData).then(function(orderNewData) {
           vm.getAllOrders();
+          mySocket.emit('newEvent');
         }, function(err) { throw err });
       };
 

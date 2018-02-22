@@ -69,10 +69,8 @@ exports.getAllOrders = (req, res) => {
 };
 
 exports.editOrder = (req, res) => {
-  console.log(req.params.id);
   Orders.updateOne({ _id: req.params.id }, { $set: req.body.change },  (err, newData) => {
     if (err) throw err;
-    console.log(newData);
     res.send(newData);
   });
 };

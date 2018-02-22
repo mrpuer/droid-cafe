@@ -15,12 +15,13 @@ const client = require('./routes/client');
 const orders = require('./routes/orders');
 const cafeAPIv1 = express.Router();
 
-// io.on('connection', (socket) => {
-//   console.log('user connected');
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
+io.on('connection', (socket) => {
+  console.log('user connected');
+  socket.on('newEvent', function() {
+    console.log('Server receive update order event!');
+    io.emit('newEvent');
+  });
+});
 
 // client area page
 app.get('/', (req, res) => {

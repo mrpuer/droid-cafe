@@ -6,11 +6,17 @@ angular
       clientInfo: '<',
       isLogged: '<',
       addOrder: '&',
-      clientOrders: '<'
+      clientOrders: '<',
+      getUserOrders: '&'
     },
-    controller: function(OrdersService) {
+    controller: function(OrdersService, mySocket) {
       var $ctrl = this;
       $ctrl.cafeMenu = {};
+
+      mySocket.on('newEvent', function(){
+        console.log('i have a order event!');
+        $ctrl.getUserOrders();
+      });
 
       $ctrl.getMenu = function() {
         OrdersService.getMenu().then(function(success) {
@@ -29,6 +35,7 @@ angular
           userData.newOrderId = success.data._id;
           userData.newOrderPrice = dish.price;
           $ctrl.addOrder({orderId: userData});
+          mySocket.emit('newEvent');
         }, function(err) {
           throw err;
         });
