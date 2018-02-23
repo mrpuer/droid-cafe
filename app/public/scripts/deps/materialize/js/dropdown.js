@@ -11,7 +11,7 @@
     var defaults = {
       inDuration: 300,
       outDuration: 225,
-      constrainWidth: true, // Constrains width of dropdown to the activator
+      constrain_width: true, // Constrains width of dropdown to the activator
       hover: false,
       gutter: 0, // Spacing from edge
       belowOrigin: false,
@@ -49,7 +49,7 @@
         if (origin.data('outduration') !== undefined)
           curr_options.outDuration = origin.data('outduration');
         if (origin.data('constrainwidth') !== undefined)
-          curr_options.constrainWidth = origin.data('constrainwidth');
+          curr_options.constrain_width = origin.data('constrainwidth');
         if (origin.data('hover') !== undefined)
           curr_options.hover = origin.data('hover');
         if (origin.data('gutter') !== undefined)
@@ -84,11 +84,9 @@
         activates.addClass('active');
         origin.addClass('active');
 
-        var originWidth = origin[0].getBoundingClientRect().width;
-
         // Constrain width
-        if (curr_options.constrainWidth === true) {
-          activates.css('width', originWidth);
+        if (curr_options.constrain_width === true) {
+          activates.css('width', origin.outerWidth());
 
         } else {
           activates.css('white-space', 'nowrap');
@@ -152,15 +150,7 @@
           leftPosition = origin.position().left + gutterSpacing;
         }
         else if (currAlignment === 'right') {
-          // Material icons fix
-          activates
-            .stop(true, true)
-            .css({
-              opacity: 0,
-              left: 0
-            })
-
-          var offsetRight = origin.position().left + originWidth - activates.width();
+          var offsetRight = origin.position().left + origin.outerWidth() - activates.outerWidth();
           gutterSpacing = -curr_options.gutter;
           leftPosition =  offsetRight + gutterSpacing;
         }
@@ -172,8 +162,9 @@
           left: leftPosition + scrollXOffset
         });
 
+
         // Show dropdown
-        activates
+        activates.stop(true, true).css('opacity', 0)
           .slideDown({
             queue: false,
             duration: curr_options.inDuration,
@@ -183,14 +174,6 @@
             }
           })
           .animate( {opacity: 1}, {queue: false, duration: curr_options.inDuration, easing: 'easeOutSine'});
-
-        // Add click close handler to document
-        setTimeout(function() {
-          $(document).on('click.'+ activates.attr('id'), function (e) {
-            hideDropdown();
-            $(document).off('click.'+ activates.attr('id'));
-          });
-        }, 0);
       }
 
       function hideDropdown() {
@@ -199,14 +182,13 @@
         activates.fadeOut(curr_options.outDuration);
         activates.removeClass('active');
         origin.removeClass('active');
-        $(document).off('click.'+ activates.attr('id'));
         setTimeout(function() { activates.css('max-height', ''); }, curr_options.outDuration);
       }
 
       // Hover
       if (curr_options.hover) {
         var open = false;
-        origin.off('click.' + origin.attr('id'));
+        origin.unbind('click.' + origin.attr('id'));
         // Hover handler to show dropdown
         origin.on('mouseenter', function(e){ // Mouse over
           if (open === false) {
@@ -236,8 +218,8 @@
         // Click
       } else {
         // Click handler to show dropdown
-        origin.off('click.' + origin.attr('id'));
-        origin.on('click.'+origin.attr('id'), function(e){
+        origin.unbind('click.' + origin.attr('id'));
+        origin.bind('click.'+origin.attr('id'), function(e){
           if (!isFocused) {
             if ( origin[0] == e.currentTarget &&
                  !origin.hasClass('active') &&
@@ -251,7 +233,16 @@
             // If origin is clicked and menu is open, close menu
             else if (origin.hasClass('active')) {
               hideDropdown();
-              $(document).off('click.'+ activates.attr('id'));
+              $(document).unbind('click.'+ activates.attr('id') + ' touchstart.' + activates.attr('id'));
+            }
+            // If menu open, add click close handler to document
+            if (activates.hasClass('active')) {
+              $(document).bind('click.'+ activates.attr('id') + ' touchstart.' + activates.attr('id'), function (e) {
+                if (!activates.is(e.target) && !origin.is(e.target) && (!origin.find(e.target).length) ) {
+                  hideDropdown();
+                  $(document).unbind('click.'+ activates.attr('id') + ' touchstart.' + activates.attr('id'));
+                }
+              });
             }
           }
         });

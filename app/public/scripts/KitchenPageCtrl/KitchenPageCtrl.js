@@ -1,6 +1,6 @@
 angular
     .module('cafeApp')
-    .controller('KitchenPageCtrl', function(OrdersService, mySocket) {
+    .controller('KitchenPageCtrl', function(OrdersService, MenuService, mySocket) {
       var vm = this;
       vm.orders = {};
 
@@ -14,7 +14,7 @@ angular
         OrdersService.getAllOrders().then(function(orders) {
           vm.orders = orders.data;
           vm.orders.map(function(order) {
-            OrdersService.getMenuItem(order.itemId).then(function(dishData) {
+            MenuService.getMenuItem(order.itemId).then(function(dishData) {
               order.fullInfo = dishData.data[0];
               return order;
             }, function(err) { throw err });

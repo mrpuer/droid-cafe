@@ -9,6 +9,7 @@ angular
         console.log('i am userorders emit in clientpage ctrl');
       });
       vm.login = function(data) {
+        vm.isLogged = true;
         if (data.name) vm.clientName = data.name;
             ClientService.getClient(data.email).then(
               function(result) {
@@ -24,7 +25,7 @@ angular
                   ClientService.addClient(data).then(function(result) {
                     vm.clientInfo = result.data;
                     mySocket.emit('userOrders');
-                    vm.isLogged = true;
+                    //vm.isLogged = true;
                   });
                 }
               },
@@ -49,7 +50,6 @@ angular
             vm.clientInfo.balance -= dishPrice;
             ClientService.editClient(vm.clientInfo).then(function(success) {
               vm.clientInfo = success.config.data;
-              vm.getUserOrders();
             }, function(err) {
               throw err;
             });

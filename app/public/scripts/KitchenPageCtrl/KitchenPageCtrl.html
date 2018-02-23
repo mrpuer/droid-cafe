@@ -1,24 +1,30 @@
 <div class="row">
     <div class="col s6">
-      <h2>Ordered</h2>
+      <h2 class="grey-text text-lighten-1">Ordered</h2>
     </div>
     <div class="col s6">
-      <h2>Cooking</h2>
+      <h2 class="grey-text text-lighten-1">Cooking</h2>
     </div>
 </div>
 <div class="row">
     <div class="col s6">
       <div data-ng-repeat="order in vm.orders">
-<ul class="collection" data-ng-if="order.status === 'Ordered'">
+<ul class="collection hoverable" data-ng-if="order.status === 'Ordered'">
     <li class="collection-item avatar">
-      <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
-      <span class="title">{{order.fullInfo.title}}</span>
-      <span class="new badge red" data-badge-caption="">
+      <div class="col s1">
+        <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
+      </div>
+      <div class="col s8">
+        <span class="title">{{order.fullInfo.title}}</span>
+      </div>
+      <div class="col s3">
+      <span class="new badge orange" data-badge-caption="">
         {{order.status}}
-      </span>
-      <span data-ng-click="vm.addToCooking(order, 'Cooking')" class="new badge red" data-badge-caption="">
+      </span><br><br>
+      <span data-ng-click="vm.addToCooking(order, 'Cooking')" class="new badge green" data-badge-caption="">
           Start Cooking
         </span>
+      </div>
     </li>
   </ul>
 </div>
@@ -26,16 +32,22 @@
 
     <div class="col s6">
         <div data-ng-repeat="order in vm.orders">
-            <ul class="collection" data-ng-if="order.status === 'Cooking'">
+            <ul class="collection hoverable" data-ng-if="order.status === 'Cooking'">
                 <li class="collection-item avatar">
+                    <div class="col s1">
                   <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
+                  </div>
+                  <div class="col s8">
                   <span class="title">{{order.fullInfo.title}}</span>
+                  </div>
+                  <div class="col s3">
                   <span data-ng-click="vm.addToCooking(order)" class="new badge blue" data-badge-caption="">
                     {{order.status}}
-                  </span>
-                  <span data-ng-click="vm.addToCooking(order, 'Delivering')" class="new badge blue" data-badge-caption="">
+                  </span><br><br>
+                  <span data-ng-click="vm.addToCooking(order, 'Delivering')" class="new badge green" data-badge-caption="">
                       Done
                     </span>
+                    </div>
                 </li>
               </ul>
             </div>

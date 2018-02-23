@@ -1,0 +1,43 @@
+<!-- Modal Trigger -->
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" data-ng-click="$ctrl.getMenu()" data-target='menuModal' modal>
+      <i class="large material-icons">reorder</i>
+    </a>
+  </div>
+<a class="waves-effect waves-light red btn-large modal-trigger" data-ng-click="$ctrl.getMenu()" data-target='menuModal' modal><i class="material-icons left">reorder</i>Open Menu</a>
+
+
+<!-- Modal Structure -->
+<div id="menuModal" class="modal bottom-sheet">
+<div class="modal-content blue-grey-text text-darken-4">
+<h4 class="blue-text text-darken-2 center-align"><i class="material-icons">whatshot</i> Cafe Menu <i class="material-icons">whatshot</i></h4>
+
+<div class="row">
+    <div class="col s12 m6" data-ng-repeat="dish in $ctrl.cafeMenu">
+      <div class="card medium">
+        <div class="card-image">
+          <img data-ng-src="{{dish.image}}">
+          <span class="col s12 card-title red-text text-lighten-4">
+              <span class="right">
+                <a data-ng-click="$ctrl.addOrder(dish)" data-ng-disabled="dish.price > $ctrl.clientInfo.balance" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">playlist_add</i></a>
+              </span>
+            <span class="new badge purple left" data-badge-caption="{{dish.title}}"></span>
+          </span>
+        </div>
+        <div class="card-content">
+          <p>
+            <div>
+              <h5 class="blue-text">Rating: {{dish.rating}} <span class="right red-text">Price: {{dish.price}}</span></h5>
+              <span class="new badge cyan left" data-badge-caption="{{ingredient}}" data-ng-repeat="ingredient in dish.ingredients track by $index"></span>
+              </div>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Close Menu</a>
+</div>
+</div>

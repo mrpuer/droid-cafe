@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const client = require('./routes/client');
 const orders = require('./routes/orders');
+const menu = require('./routes/menu');
 const cafeAPIv1 = express.Router();
 
 // socket server
@@ -48,12 +49,14 @@ cafeAPIv1.get('/clients/:email', client.getClient);
 cafeAPIv1.put('/clients/:email', client.editClient);
 
 // orders REST API
-cafeAPIv1.get('/menu', orders.getMenu);
-cafeAPIv1.get('/menu/:dish', orders.getMenuItem);
 cafeAPIv1.post('/orders', orders.addOrder);
 cafeAPIv1.get('/orders/', orders.getAllOrders);
 cafeAPIv1.get('/orders/:clientId', orders.getClientOrders);
 cafeAPIv1.put('/orders/:id', orders.editOrder);
+
+// menu REST API
+cafeAPIv1.get('/menu', menu.getMenu);
+cafeAPIv1.get('/menu/:dish', menu.getMenuItem);
 
 app.use('/api/v1', cafeAPIv1);
 http.listen(PORT, () => console.log('Server is running...'));

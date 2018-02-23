@@ -6,21 +6,26 @@ angular
       clientInfo: '<',
       isLogged: '<'
     },
-    controller: function(OrdersService, mySocket) {
+    controller: function(OrdersService, MenuService, mySocket) {
       var $ctrl = this;
       $ctrl.clientOrders = {};
-      console.log(mySocket);
-      mySocket.on('connect', function(){
-        console.log('im connect emit!');
+
+      // mySocket.on('connect', function(){
+      //   console.log('im connect emit!');
+      //   $ctrl.getUserOrders();
+      // });
+      mySocket.on('newOrder', function(){
+        console.log('ordersComponent receive newOrder Emit');
         $ctrl.getUserOrders();
       });
-      mySocket.on('orderUptated', function(){
+      // mySocket.on('UserOrders', function(){
+      //   console.log('I got userOrders emit!');
+      //   $ctrl.getUserOrders();
+      // });
+
+      $ctrl.$onInit = function() {
         $ctrl.getUserOrders();
-      });
-      mySocket.on('UserOrders', function(){
-        console.log('I got userOrders emit!');
-        $ctrl.getUserOrders();
-      });
+      };
 
       $ctrl.getUserOrders = function() {
         OrdersService.getUserOrders($ctrl.clientInfo._id).then(function(success) {
@@ -28,7 +33,7 @@ angular
           $ctrl.clientOrders = success.data;
           // добавляем каждому полное инфо блюда из меню
           $ctrl.clientOrders.map((order) => {
-            OrdersService.getMenuItem(order.itemId).then(function(success) {
+            MenuService.getMenuItem(order.itemId).then(function(success) {
               order.dishInfo = success.data[0];
               return order;
             }, function(err) {throw err})
@@ -43,8 +48,7 @@ angular
         orderData.itemId = dish.id;
         orderData.userId = $ctrl.clientInfo._id;
         OrdersService.addOrder(orderData).then(function(success) {
-          mySocket.emit('chargeBalance', dish.price);
-          mySocket.emit('orderUptated');
+          mySocket.emit('newOrder', dish.price);
         }, function(err) {
           throw err;
         });

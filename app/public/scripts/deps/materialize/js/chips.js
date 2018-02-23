@@ -1,9 +1,9 @@
 (function ($) {
+  var chipsHandleEvents = false;
   var materialChipsDefaults = {
     data: [],
     placeholder: '',
     secondaryPlaceholder: '',
-    autocompleteOptions: {},
   };
 
   $(document).ready(function() {
@@ -34,7 +34,7 @@
     }
 
     var curr_options = $.extend({}, materialChipsDefaults, options);
-    self.hasAutocomplete = !$.isEmptyObject(curr_options.autocompleteOptions.data);
+
 
     // Initialize
     this.init = function() {
@@ -43,7 +43,6 @@
       self.$el.each(function(){
         var $chips = $(this);
         var chipId = Materialize.guid();
-        self.chipId = chipId;
 
         if (!curr_options.data || !(curr_options.data instanceof Array)) {
           curr_options.data = [];
@@ -61,7 +60,7 @@
       });
     };
 
-    this.handleEvents = function() {
+    this.handleEvents = function(){
       var SELS = self.SELS;
 
       self.$document.off('click.chips-focus', SELS.CHIPS).on('click.chips-focus', SELS.CHIPS, function(e){
@@ -69,16 +68,8 @@
       });
 
       self.$document.off('click.chips-select', SELS.CHIP).on('click.chips-select', SELS.CHIP, function(e){
-        var $chip = $(e.target);
-        if ($chip.length) {
-          var wasSelected = $chip.hasClass('selected');
-          var $chips = $chip.closest(SELS.CHIPS);
-          $(SELS.CHIP).removeClass('selected');
-
-          if (!wasSelected) {
-            self.selectChip($chip.index(), $chips);
-          }
-        }
+        $(SELS.CHIP).removeClass('selected');
+        $(this).toggleClass('selected');
       });
 
       self.$document.off('keydown.chips').on('keydown.chips', function(e){
@@ -149,7 +140,7 @@
         $currChips.removeClass('focus');
 
         // Remove active if empty
-        if ($currChips.data('chips') === undefined || !$currChips.data('chips').length) {
+        if (!$currChips.data('chips').length) {
           $currChips.siblings('label').removeClass('active');
         }
         $currChips.siblings('.prefix').removeClass('active');
@@ -162,13 +153,6 @@
 
         // enter
         if (13 === e.which) {
-          // Override enter if autocompleting.
-          if (self.hasAutocomplete &&
-              $chips.find('.autocomplete-content.dropdown-content').length &&
-              $chips.find('.autocomplete-content.dropdown-content').children().length) {
-            return;
-          }
-
           e.preventDefault();
           self.addChip({tag: $target.val()}, $chips);
           $target.val('');
@@ -176,8 +160,7 @@
         }
 
         // delete or left
-        if ((8 === e.keyCode || 37 === e.keyCode) && '' === $target.val() && chipsLength) {
-          e.preventDefault();
+         if ((8 === e.keyCode || 37 === e.keyCode) && '' === $target.val() && chipsLength) {
           self.selectChip(chipsLength - 1, $chips);
           $target.blur();
           return;
@@ -196,11 +179,12 @@
     };
 
     this.chips = function($chips, chipId) {
-      $chips.empty();
+      var html = '';
       $chips.data('chips').forEach(function(elem){
-        $chips.append(self.renderChip(elem));
+        html += self.renderChip(elem);
       });
-      $chips.append($('<input id="' + chipId +'" class="input" placeholder="">'));
+      html += '<input id="' + chipId +'" class="input" placeholder="">';
+      $chips.html(html);
       self.setPlaceholder($chips);
 
       // Set for attribute for label
@@ -208,45 +192,29 @@
       if (label.length) {
         label.attr('for', chipId);
 
-        if ($chips.data('chips')!== undefined && $chips.data('chips').length) {
+        if ($chips.data('chips').length) {
           label.addClass('active');
         }
       }
-
-      // Setup autocomplete if needed.
-      var input = $('#' + chipId);
-      if (self.hasAutocomplete) {
-        curr_options.autocompleteOptions.onAutocomplete = function(val) {
-          self.addChip({tag: val}, $chips);
-          input.val('');
-          input.focus();
-        }
-        input.autocomplete(curr_options.autocompleteOptions);
-      }
     };
 
-    /**
-     * Render chip jQuery element.
-     * @param {Object} elem
-     * @return {jQuery}
-     */
     this.renderChip = function(elem) {
       if (!elem.tag) return;
 
-      var $renderedChip = $('<div class="chip"></div>');
-      $renderedChip.text(elem.tag);
+      var html = '<div class="chip">' + elem.tag;
       if (elem.image) {
-        $renderedChip.prepend($('<img />').attr('src', elem.image))
+        html += ' <img src="' + elem.image + '"> ';
       }
-      $renderedChip.append($('<i class="material-icons close">close</i>'));
-      return $renderedChip;
+      html += '<i class="material-icons close">close</i>';
+      html += '</div>';
+      return html;
     };
 
     this.setPlaceholder = function($chips) {
-      if (($chips.data('chips') !== undefined && !$chips.data('chips').length) && curr_options.placeholder) {
+      if ($chips.data('chips').length && curr_options.placeholder) {
         $chips.find('input').prop('placeholder', curr_options.placeholder);
 
-      } else if (($chips.data('chips') === undefined || !!$chips.data('chips').length) && curr_options.secondaryPlaceholder) {
+      } else if (!$chips.data('chips').length && curr_options.secondaryPlaceholder) {
         $chips.find('input').prop('placeholder', curr_options.secondaryPlaceholder);
       }
     };
@@ -267,7 +235,7 @@
       if (!self.isValid($chips, elem)) {
         return;
       }
-      var $renderedChip = self.renderChip(elem);
+      var chipHtml = self.renderChip(elem);
       var newData = [];
       var oldData = $chips.data('chips');
       for (var i = 0; i < oldData.length; i++) {
@@ -276,7 +244,7 @@
       newData.push(elem);
 
       $chips.data('chips', newData);
-      $renderedChip.insertBefore($chips.find('input'));
+      $(chipHtml).insertBefore($chips.find('input'));
       $chips.trigger('chip.add', elem);
       self.setPlaceholder($chips);
     };
@@ -313,6 +281,9 @@
     // init
     this.init();
 
-    this.handleEvents();
+    if (!chipsHandleEvents) {
+      this.handleEvents();
+      chipsHandleEvents = true;
+    }
   };
 }( jQuery ));

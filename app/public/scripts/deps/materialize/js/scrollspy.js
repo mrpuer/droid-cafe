@@ -105,6 +105,57 @@
 		jWindow.trigger('scrollSpy:winSize');
 	}
 
+	/**
+	 * Get time in ms
+   * @license https://raw.github.com/jashkenas/underscore/master/LICENSE
+	 * @type {function}
+	 * @return {number}
+	 */
+	var getTime = (Date.now || function () {
+		return new Date().getTime();
+	});
+
+	/**
+	 * Returns a function, that, when invoked, will only be triggered at most once
+	 * during a given window of time. Normally, the throttled function will run
+	 * as much as it can, without ever going more than once per `wait` duration;
+	 * but if you'd like to disable the execution on the leading edge, pass
+	 * `{leading: false}`. To disable execution on the trailing edge, ditto.
+	 * @license https://raw.github.com/jashkenas/underscore/master/LICENSE
+	 * @param {function} func
+	 * @param {number} wait
+	 * @param {Object=} options
+	 * @returns {Function}
+	 */
+	function throttle(func, wait, options) {
+		var context, args, result;
+		var timeout = null;
+		var previous = 0;
+		options || (options = {});
+		var later = function () {
+			previous = options.leading === false ? 0 : getTime();
+			timeout = null;
+			result = func.apply(context, args);
+			context = args = null;
+		};
+		return function () {
+			var now = getTime();
+			if (!previous && options.leading === false) previous = now;
+			var remaining = wait - (now - previous);
+			context = this;
+			args = arguments;
+			if (remaining <= 0) {
+				clearTimeout(timeout);
+				timeout = null;
+				previous = now;
+				result = func.apply(context, args);
+				context = args = null;
+			} else if (!timeout && options.trailing !== false) {
+				timeout = setTimeout(later, remaining);
+			}
+			return result;
+		};
+	};
 
 	/**
 	 * Enables ScrollSpy using a selector
@@ -115,17 +166,12 @@
         offsetRight : number -> offset from right. Default: 0
         offsetBottom : number -> offset from bottom. Default: 0
         offsetLeft : number -> offset from left. Default: 0
-				activeClass : string -> Class name to be added to the active link. Default: active
 	 * @returns {jQuery}
 	 */
 	$.scrollSpy = function(selector, options) {
 	  var defaults = {
 			throttle: 100,
-			scrollOffset: 200, // offset - 200 allows elements near bottom of page to scroll
-			activeClass: 'active',
-			getActiveElement: function(id) {
-				return 'a[href="#' + id + '"]';
-			}
+			scrollOffset: 200 // offset - 200 allows elements near bottom of page to scroll
     };
     options = $.extend(defaults, options);
 
@@ -147,7 +193,7 @@
 		offset.bottom = options.offsetBottom || 0;
 		offset.left = options.offsetLeft || 0;
 
-		var throttledScroll = Materialize.throttle(function() {
+		var throttledScroll = throttle(function() {
 			onScroll(options.scrollOffset);
 		}, options.throttle || 100);
 		var readyScroll = function(){
@@ -172,7 +218,7 @@
 			var $this = $(this);
 
 			if (visible[0]) {
-				$(options.getActiveElement(visible[0].attr('id'))).removeClass(options.activeClass);
+				$('a[href="#' + visible[0].attr('id') + '"]').removeClass('active');
 				if ($this.data('scrollSpy:id') < visible[0].data('scrollSpy:id')) {
 					visible.unshift($(this));
 				}
@@ -185,7 +231,7 @@
 			}
 
 
-			$(options.getActiveElement(visible[0].attr('id'))).addClass(options.activeClass);
+			$('a[href="#' + visible[0].attr('id') + '"]').addClass('active');
 		});
 		selector.on('scrollSpy:exit', function() {
 			visible = $.grep(visible, function(value) {
@@ -193,13 +239,13 @@
 	    });
 
 			if (visible[0]) {
-				$(options.getActiveElement(visible[0].attr('id'))).removeClass(options.activeClass);
+				$('a[href="#' + visible[0].attr('id') + '"]').removeClass('active');
 				var $this = $(this);
 				visible = $.grep(visible, function(value) {
 	        return value.attr('id') != $this.attr('id');
 	      });
 	      if (visible[0]) { // Check if empty
-					$(options.getActiveElement(visible[0].attr('id'))).addClass(options.activeClass);
+					$('a[href="#' + visible[0].attr('id') + '"]').addClass('active');
 	      }
 			}
 		});
@@ -217,7 +263,7 @@
 		options = options || {
 			throttle: 100
 		};
-		return jWindow.on('resize', Materialize.throttle(onWinSize, options.throttle || 100));
+		return jWindow.on('resize', throttle(onWinSize, options.throttle || 100));
 	};
 
 	/**

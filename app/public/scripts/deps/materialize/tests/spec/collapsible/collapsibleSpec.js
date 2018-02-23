@@ -1,11 +1,9 @@
 describe( "Collapsible Plugin", function () {
-  var collapsible, accordion, popout, expandable, expandablePreselect;
+  var collapsible, accordion;
 
   beforeEach(function() {
     loadFixtures('collapsible/collapsible.html');
     collapsible = $('.collapsible');
-    expandable = $('.expandable');
-    expandablePreselect = $('.expandable-preselected');
     accordion = $('.accordion');
     popout = $('.popout');
     collapsible.collapsible();
@@ -13,10 +11,10 @@ describe( "Collapsible Plugin", function () {
 
   describe( "collapsible", function () {
 
-    it("should open all items, keeping all open", function (done) {
+    it("should open all items, keeping all open", function () {
       // Collapsible body height should be 0 on start when hidden.
-      var headers = expandable.find('.collapsible-header');
-      var bodies = expandable.find('.collapsible-body');
+      var headers = collapsible.find('.collapsible-header');
+      var bodies = collapsible.find('.collapsible-body');
 
       bodies.each(function() {
         expect($(this)).toBeHidden('because collapsible bodies should be hidden initially.');
@@ -26,28 +24,8 @@ describe( "Collapsible Plugin", function () {
       headers.each(function() {
         $(this).click();
       });
-
-      setTimeout(function() {
-        bodies.each(function() {
-          expect($(this)).toBeVisible('because collapsible bodies not visible after being opened.');
-        });
-        done()
-      }, 400);
-    });
-
-    it("should allow preopened sections", function () {
-      var headers = expandablePreselect.find('.collapsible-header');
-      var bodies = expandablePreselect.find('.collapsible-body');
-
-      bodies.each(function(i) {
-        var header = $(this).prev('.collapsible-header');
-
-        if (i === 1) {
-          expect(header).toHaveClass('active', 'because collapsible header should have active class to be preselected.');
-          expect($(this)).toBeVisible('because collapsible bodies should be visible if preselected.');
-        } else {
-          expect($(this)).toBeHidden('because collapsible bodies should be hidden initially.');
-        }
+      bodies.each(function() {
+        expect($(this)).toBeVisible('because collapsible bodies not visible after being opened.');
       });
     });
   });

@@ -1,15 +1,51 @@
 <div class="row white-text">
-  <div class="col s6 blue darken-4 z-depth-2 hoverable">
+  <div data-ng-if="!vm.isLogged" class="col s12">
     <div class="container">
-      <div><h2 class="center-align valign-wrapper">Account Area</h2></div>
-      <account-component client-info="vm.clientInfo" is-logged="vm.isLogged" client-login="vm.login(client)" add-balance="vm.addBalance()" client-name="vm.clientName"></account-component>
+        <h3 class="grey-text text-lighten-1">Login first, to make new orders:</h3>
+        <div class="row">
+            <form name="clientLoginForm" class="col s6">
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input data-ng-model="client.name" id="user_name" type="text" class="validate" name="name">
+                  <label for="user_name">User Name</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">email</i>
+                  <input data-ng-model="client.email" id="email" type="email" class="validate" name="email" required>
+                  <label for="email" data-error="Type correct email adress">Email</label>
+                </div>
+              </div>
+              <div class="row">
+                    <button class="btn waves-effect waves-light" data-ng-click="vm.login(client)" ng-disabled="clientLoginForm.$invalid">Login
+                            <i class="material-icons right">send</i>
+                          </button>
+                </div>
+            </form>
+          </div>
     </div>
   </div>
 
-  <div class="col s6 teal darken-1 z-depth-2 hoverable">
+  <div data-ng-if="vm.isLogged" class="col s12">
+      <div class="progress" data-ng-if="!vm.clientInfo._id">
+          <div class="indeterminate"></div>
+      </div>
+  <div data-ng-if="vm.clientInfo._id">
+  <div class="col s6 center-align"> 
+
+    <account-component client-info="vm.clientInfo" is-logged="vm.isLogged" client-name="vm.clientName"></account-component><br>
+
+    <menu-component></menu-component>
+    
+  </div>
+
+  <div class="col s6">
     <div class="container">
-      <h2 class="center-align valign-wrapper">Orders Area</h2>
-          <orders-component is-logged="vm.isLogged" client-info="vm.clientInfo"></orders-component>
+      <orders-component is-logged="vm.isLogged" client-info="vm.clientInfo"></orders-component>
     </div>
   </div>
+</div>
+</div>
 </div>

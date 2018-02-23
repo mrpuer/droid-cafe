@@ -33,18 +33,18 @@
 
   li {
     float: none;
-    line-height: $sidenav-line-height;
+    line-height: $sidenav-item-height;
 
     &.active { background-color: rgba(0,0,0,.05); }
   }
 
-  li > a {
+  a {
     color: $sidenav-font-color;
     display: block;
     font-size: $sidenav-font-size;
     font-weight: 500;
     height: $sidenav-item-height;
-    line-height: $sidenav-line-height;
+    line-height: $sidenav-item-height;
     padding: 0 ($sidenav-padding * 2);
 
     &:hover { background-color: rgba(0,0,0,.05);}
@@ -61,19 +61,18 @@
     &.btn:hover,
     &.btn-large:hover { background-color: lighten($button-raised-background, 5%); }
     &.btn-floating:hover { background-color: $button-raised-background; }
-
-    & > i,
-    & > [class^="mdi-"], li > a > [class*="mdi-"],
-    & > i.material-icons {
-      float: left;
-      height: $sidenav-item-height;
-      line-height: $sidenav-line-height;
-      margin: 0 ($sidenav-padding * 2) 0 0;
-      width: $sidenav-item-height / 2;
-      color: rgba(0,0,0,.54);
-    }
   }
 
+  li > a > i,
+  li > a > [class^="mdi-"], li > a > [class*="mdi-"],
+  li > a > i.material-icons {
+    float: left;
+    height: $sidenav-item-height;
+    line-height: $sidenav-item-height;
+    margin: 0 ($sidenav-padding * 2) 0 0;
+    width: $sidenav-item-height / 2;
+    color: rgba(0,0,0,.54);
+  }
 
   .divider {
     margin: ($sidenav-padding / 2) 0 0 0;
@@ -89,10 +88,9 @@
     color: rgba(0,0,0,.54);
     font-size: $sidenav-font-size;
     font-weight: 500;
-    line-height: $sidenav-line-height;
+    line-height: $sidenav-item-height;
   }
 
-  .user-view,
   .userView {
     position: relative;
     padding: ($sidenav-padding * 2) ($sidenav-padding * 2) 0;
@@ -126,7 +124,7 @@
     .name,
     .email {
       font-size: $sidenav-font-size;
-      line-height: $sidenav-line-height / 2;
+      line-height: 24px;
     }
 
     .name {
@@ -180,7 +178,6 @@
       padding: 0 $sidenav-padding;
     }
 
-    .user-view,
     .userView {
       padding: $sidenav-padding $sidenav-padding 0;
     }
@@ -194,9 +191,6 @@
   a {
     color: $sidenav-bg-color;
   }
-}
-.side-nav .collapsible-body {
-  padding: 0;
 }
 
 

@@ -1,6 +1,7 @@
 angular.module('cafeApp', [
     'ui.router',
-    'btford.socket-io'
+    'btford.socket-io',
+    'ui.materialize'
 ])
 .config(($stateProvider, $locationProvider, $urlRouterProvider) => {
     $stateProvider

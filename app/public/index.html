@@ -9,19 +9,15 @@
     <link rel="stylesheet" href="css/custom.css">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="scripts/deps/materialize/dist/css/materialize.min.css">
-    <title>Dron Cafe: Определить титлы!</title>
     <script src="scripts/deps/jquery/dist/jquery.min.js"></script>
-    <script src="scripts/deps/angular/angular.min.js"></script>
-    <script src="scripts/deps/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="scripts/deps/socket.io-client/dist/socket.io.js"></script>
-    <script src="scripts/deps/angular-socket-io/socket.js"></script>
     <script src="scripts/deps/materialize/dist/js/materialize.min.js"></script>
+    <title>Dron Cafe: Определить титлы!</title>
   </head>
 
-  <body class="blue-grey lighten-2">
+  <body class="blue-grey">
 
       <nav>
-          <div class="nav-wrapper">
+          <div class="nav-wrapper light-blue darken-4">
             <a href="#" class="brand-logo center">Drone Cafe</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/">Logout</a></li>
@@ -31,7 +27,7 @@
 
     <ui-view></ui-view>
 
-    <footer class="page-footer">
+    <footer class="page-footer light-blue darken-4">
         <div class="container">
           <div class="row">
             <div class="col l6 s12">
@@ -56,11 +52,19 @@
         </div>
       </footer>
 
+      <script src="scripts/deps/angular/angular.min.js"></script>
+      <script src="scripts/deps/angular-ui-router/release/angular-ui-router.min.js"></script>
+      <script src="scripts/deps/socket.io-client/dist/socket.io.js"></script>
+      <script src="scripts/deps/angular-socket-io/socket.js"></script>
+      <script src="scripts/deps/angular-materialize/src/angular-materialize.js"></script>
+      
     <script src="scripts/app.js"></script>
     <script src="scripts/ClientPageCtrl/ClientPageCtrl.js"></script>
     <script src="scripts/ClientService/ClientService.js"></script>
     <script src="scripts/OrdersComponent/OrdersComponent.js"></script>
     <script src="scripts/AccountComponent/AccountComponent.js"></script>
+    <script src="scripts/MenuComponent/MenuComponent.js"></script>
+    <script src="scripts/MenuService/MenuService.js"></script>
     <script src="scripts/OrdersService/OrdersService.js"></script>
     <script src="scripts/SocketService/SocketService.js"></script>
     <script src="scripts/KitchenPageCtrl/KitchenPageCtrl.js"></script>

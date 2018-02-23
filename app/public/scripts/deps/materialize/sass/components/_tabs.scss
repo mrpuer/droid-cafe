@@ -22,7 +22,10 @@
     display: flex;
 
     .tab {
-      flex-grow: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
     }
   }
 
@@ -83,6 +86,9 @@
     display: flex;
 
     .tab {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
       flex-grow: 1;
 
       a {
