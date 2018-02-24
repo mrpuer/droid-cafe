@@ -55,6 +55,7 @@ cafeAPIv1.post('/orders', orders.addOrder);
 cafeAPIv1.get('/orders/', orders.getAllOrders);
 cafeAPIv1.get('/orders/:clientId', orders.getClientOrders);
 cafeAPIv1.put('/orders/:id', orders.editOrder);
+cafeAPIv1.delete('/orders/:id', orders.removeOrder);
 
 // menu REST API
 cafeAPIv1.get('/menu', menu.getMenu);

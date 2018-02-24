@@ -1,6 +1,6 @@
 angular
     .module('cafeApp')
-    .controller('KitchenPageCtrl', function(OrdersService, MenuService, mySocket, DeliveryService) {
+    .controller('KitchenPageCtrl', function(OrdersService, MenuService, mySocket, DeliveryService, $timeout) {
       var vm = this;
       vm.orders = {};
 
@@ -38,16 +38,12 @@ angular
       vm.sendToDelivery = function(order) {
         vm.changeOrderStatus(order, 'Delivering');
         DeliveryService.addNew().then(function(success) {
-          console.log(success.data);
-          success.data()
-            .then(() => {
-              console.log('Доставлено');
-              vm.changeOrderStatus(order, 'Done');
-            })
-            .catch(() => {
-              console.log('Возникли сложности');
-              vm.changeOrderStatus(order, 'Problems');
-            });
+          success.data ? vm.changeOrderStatus(order, 'Done') : vm.changeOrderStatus(order, 'Problems');
+          $timeout(function() {
+            OrdersService.removeOrder(order._id).then(function(success) {
+              mySocket.emit('orderUptated');
+            }, function(err) { throw err });
+          }, 120000);
         }, function (err) { throw err })
       };
     });

@@ -12,7 +12,10 @@ angular
         return $http.get(`/api/v1/orders/${id}`);
       },
       getAllOrders: function() {
-        return $http.get(`/api/v1/orders/`);
+        return $http.get('/api/v1/orders/');
+      },
+      removeOrder: function(id) {
+        return $http.delete(`/api/v1/orders/${id}`);
       }
     };
   });

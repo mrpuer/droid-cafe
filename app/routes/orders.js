@@ -45,3 +45,10 @@ exports.editOrder = (req, res) => {
     res.send(newData);
   });
 };
+
+exports.removeOrder = (req, res) => {
+  Orders.deleteOne({ _id: req.params.id },  (err, newData) => {
+    if (err) throw err;
+    res.send(newData);
+  });
+};
