@@ -1,6 +1,6 @@
 <div data-ng-if="$ctrl.isLogged">
-<h4 class="grey-text text-lighten-1" data-ng-if="!$ctrl.clientInfo.orders.length">You are not have any orders</h4>
-<div data-ng-if="$ctrl.clientInfo.orders.length">
+<h4 class="grey-text text-lighten-1" data-ng-if="!$ctrl.clientOrders.length">You are not have any orders</h4>
+<div data-ng-if="$ctrl.clientOrders.length">
   <h4 class="grey-text text-lighten-1 center-align">Your orders:</h4>
   <ul data-ng-repeat="order in $ctrl.clientOrders" class="collection hoverable">
       <li class="collection-item avatar">

@@ -3,7 +3,8 @@ angular.module("cafeApp").component("accountComponent", {
   bindings: {
     clientInfo: "<",
     isLogged: "<",
-    clientName: '<'
+    clientName: '<',
+    addBalance: '&'
   },
   controller: function() {
     var $ctrl = this;

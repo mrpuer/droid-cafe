@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const cafeAPIv1 = express.Router();
 const path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const drone = require('netology-fake-drone-api');
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const client = require('./routes/client');
 const orders = require('./routes/orders');
 const menu = require('./routes/menu');
-const cafeAPIv1 = express.Router();
+const delivery = require('./routes/delivery');
 
 // socket server
 io.on('connection', (socket) => {
@@ -23,10 +25,10 @@ io.on('connection', (socket) => {
     console.log('Server receive update order event!');
     io.emit('orderUptated');
   });
-  socket.on('userOrders', function() {
-    console.log('Server receive event to get user orders!');
-    io.emit('userOrders');
-  });
+  // socket.on('userOrders', function() {
+  //   console.log('Server receive event to get user orders!');
+  //   io.emit('userOrders');
+  // });
   socket.on('newOrder', function(price) {
     console.log('Server receive event of new order!');
     io.emit('newOrder', price);
@@ -57,6 +59,10 @@ cafeAPIv1.put('/orders/:id', orders.editOrder);
 // menu REST API
 cafeAPIv1.get('/menu', menu.getMenu);
 cafeAPIv1.get('/menu/:dish', menu.getMenuItem);
+
+// delivery API
+cafeAPIv1.get('/delivery', delivery.addNew);
+
 
 app.use('/api/v1', cafeAPIv1);
 http.listen(PORT, () => console.log('Server is running...'));

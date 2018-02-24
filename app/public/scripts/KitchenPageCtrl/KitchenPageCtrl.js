@@ -1,12 +1,13 @@
 angular
     .module('cafeApp')
-    .controller('KitchenPageCtrl', function(OrdersService, MenuService, mySocket) {
+    .controller('KitchenPageCtrl', function(OrdersService, MenuService, mySocket, DeliveryService) {
       var vm = this;
       vm.orders = {};
 
-      mySocket.on('connect', function(){
+      vm.$onInit = function() {
         vm.getAllOrders();
-      });
+      };
+
       mySocket.on('orderUptated', function(){
         vm.getAllOrders();
       });
@@ -22,7 +23,7 @@ angular
         }, function(err) { throw err });
       };
 
-      vm.addToCooking = function(order, status) {
+      vm.changeOrderStatus = function(order, status) {
         const newData = { 
           _id: order._id,
           change: {
@@ -30,12 +31,23 @@ angular
           }
         };
         OrdersService.editOrder(newData).then(function(orderNewData) {
-          vm.getAllOrders();
           mySocket.emit('orderUptated');
         }, function(err) { throw err });
       };
 
-      // vm.$onInit = function() {
-      //   vm.getAllOrders();
-      // };
+      vm.sendToDelivery = function(order) {
+        vm.changeOrderStatus(order, 'Delivering');
+        DeliveryService.addNew().then(function(success) {
+          console.log(success.data);
+          success.data()
+            .then(() => {
+              console.log('Доставлено');
+              vm.changeOrderStatus(order, 'Done');
+            })
+            .catch(() => {
+              console.log('Возникли сложности');
+              vm.changeOrderStatus(order, 'Problems');
+            });
+        }, function (err) { throw err })
+      };
     });

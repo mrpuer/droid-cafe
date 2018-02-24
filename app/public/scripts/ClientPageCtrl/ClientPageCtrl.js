@@ -5,9 +5,7 @@ angular
       vm.clientInfo = {};
       vm.clientName = 'Dear Client';
       vm.isLogged = false;
-      mySocket.on('userOrders', function() {
-        console.log('i am userorders emit in clientpage ctrl');
-      });
+
       vm.login = function(data) {
         vm.isLogged = true;
         if (data.name) vm.clientName = data.name;

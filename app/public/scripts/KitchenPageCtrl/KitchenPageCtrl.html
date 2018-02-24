@@ -21,7 +21,7 @@
       <span class="new badge orange" data-badge-caption="">
         {{order.status}}
       </span><br><br>
-      <span data-ng-click="vm.addToCooking(order, 'Cooking')" class="new badge green" data-badge-caption="">
+      <span data-ng-click="vm.changeOrderStatus(order, 'Cooking')" class="new badge green" data-badge-caption="">
           Start Cooking
         </span>
       </div>
@@ -41,11 +41,11 @@
                   <span class="title">{{order.fullInfo.title}}</span>
                   </div>
                   <div class="col s3">
-                  <span data-ng-click="vm.addToCooking(order)" class="new badge blue" data-badge-caption="">
+                  <span class="new badge blue" data-badge-caption="">
                     {{order.status}}
                   </span><br><br>
-                  <span data-ng-click="vm.addToCooking(order, 'Delivering')" class="new badge green" data-badge-caption="">
-                      Done
+                  <span data-ng-click="vm.sendToDelivery(order)" class="new badge green" data-badge-caption="">
+                      Dish Done
                     </span>
                     </div>
                 </li>
