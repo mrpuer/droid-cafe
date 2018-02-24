@@ -22,7 +22,6 @@ angular
         orderData.itemId = dish.id;
         orderData.userId = $ctrl.clientInfo._id;
         OrdersService.addOrder(orderData).then(function(success) {
-          console.log(success);
           mySocket.emit('newOrder', dish.price);
         }, function(err) {
           throw err;

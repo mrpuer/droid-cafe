@@ -25,12 +25,7 @@ io.on('connection', (socket) => {
     console.log('Server receive update order event!');
     io.emit('orderUptated');
   });
-  // socket.on('userOrders', function() {
-  //   console.log('Server receive event to get user orders!');
-  //   io.emit('userOrders');
-  // });
   socket.on('newOrder', function(price) {
-    console.log('Server receive event of new order!');
     io.emit('newOrder', price);
   });
 });

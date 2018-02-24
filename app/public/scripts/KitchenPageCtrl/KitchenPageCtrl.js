@@ -11,6 +11,9 @@ angular
       mySocket.on('orderUptated', function(){
         vm.getAllOrders();
       });
+      mySocket.on('newOrder', function(){
+        vm.getAllOrders();
+      });
       vm.getAllOrders = function() {
         OrdersService.getAllOrders().then(function(orders) {
           vm.orders = orders.data;
