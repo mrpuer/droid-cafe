@@ -38,6 +38,7 @@ angular
             ClientService.editClient(vm.clientInfo).then(
                 function(success) {
                   vm.clientInfo = success.config.data;
+                  Materialize.toast('Your account has been successfully credited', 5000, 'rounded');
                 }, function(err) {
                     throw err;
                 }

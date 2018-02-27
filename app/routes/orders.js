@@ -7,7 +7,8 @@ db.connection();
 const orderSchema = mongoose.Schema({
   userId: String,
   itemId: Number,
-  status: String
+  status: String,
+  time: String
 });
 
 const Orders = mongoose.model('orders', orderSchema);
@@ -17,7 +18,8 @@ exports.addOrder = (req, res) => {
   const newOrder = new Orders({
     userId: req.body.userId,
     itemId: req.body.itemId,
-    status: 'Ordered'
+    status: 'Ordered',
+    time: req.body.time
   });
   newOrder.save((err, result) => {
     if (err) throw err;
@@ -26,16 +28,26 @@ exports.addOrder = (req, res) => {
 };
 
 exports.getClientOrders = (req, res) => {
-  Orders.find({userId: req.params.clientId}, (err, orders) => {
-    if (err) throw err;
-    res.send(orders);
+  const limit = parseInt(req.query.limit);
+  const skip = parseInt(req.query.offset);
+  Orders.aggregate([
+    { $match: { userId: req.params.clientId } },
+    { $group: { _id: null, count: { $sum: 1 }, orders: { $push: "$$ROOT" } } },
+    { $project: { _id: 0, count: 1, orders: { $slice: [ '$orders' , skip, limit ] } } }
+  ], function(err, docs) {
+    res.send(docs);
   });
 };
 
 exports.getAllOrders = (req, res) => {
-  Orders.find({}, (err, orders) => {
-    if (err) throw err;
-    res.send(orders);
+  const limit = parseInt(req.query.limit);
+  const skip = parseInt(req.query.offset);
+  Orders.aggregate([
+    { $match: { status: req.params.status } },
+    { $group: { _id: null, count: { $sum: 1 }, orders: { $push: "$$ROOT" } } },
+    { $project: { _id: 0, count: 1, orders: { $slice: [ '$orders' , skip, limit ] } } }
+  ], function(err, docs) {
+    res.send(docs);
   });
 };
 

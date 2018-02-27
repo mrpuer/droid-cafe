@@ -2,27 +2,57 @@ angular
     .module('cafeApp')
     .controller('KitchenPageCtrl', function(OrdersService, MenuService, mySocket, DeliveryService, $timeout) {
       var vm = this;
-      vm.orders = {};
+      vm.ordered = {};
+      vm.cooking = {};
+      vm.orderedLoader = true;
+      vm.cookingLoader = true;
+      vm.pagination = {
+        page: 1,
+        perPage: 5
+      }
 
       vm.$onInit = function() {
-        vm.getAllOrders();
+        vm.getOrdered(vm.pagination);
+        vm.getCooking(vm.pagination);
       };
 
       mySocket.on('orderUptated', function(){
-        vm.getAllOrders();
+        vm.getOrdered(vm.pagination);
+        vm.getCooking(vm.pagination);
       });
       mySocket.on('newOrder', function(){
-        vm.getAllOrders();
+        vm.getOrdered(vm.pagination);
+        vm.getCooking(vm.pagination);
+        Materialize.toast(`New order is added!`, 10000, 'rounded');
       });
-      vm.getAllOrders = function() {
-        OrdersService.getAllOrders().then(function(orders) {
-          vm.orders = orders.data;
-          vm.orders.map(function(order) {
-            MenuService.getMenuItem(order.itemId).then(function(dishData) {
-              order.fullInfo = dishData.data[0];
-              return order;
-            }, function(err) { throw err });
-          })
+
+      vm.getOrdered = function(pageConf) {
+        OrdersService.getAllOrders(pageConf, 'Ordered').then(function(success) {
+          vm.orderedLoader = false;
+          if (success.data.length) {
+            vm.ordered = success.data[0];
+            vm.ordered.orders.map(function(order) {
+              MenuService.getMenuItem(order.itemId).then(function(dishData) {
+                order.fullInfo = dishData.data[0];
+                return order;
+              }, function(err) { throw err });
+            })
+          };
+        }, function(err) { throw err });
+      };
+
+      vm.getCooking = function(pageConf) {
+        OrdersService.getAllOrders(pageConf, 'Cooking').then(function(success) {
+          vm.cookingLoader = false;
+          if (success.data.length) {
+            vm.cooking = success.data[0];
+            vm.cooking.orders.map(function(order) {
+              MenuService.getMenuItem(order.itemId).then(function(dishData) {
+                order.fullInfo = dishData.data[0];
+                return order;
+              }, function(err) { throw err });
+            });
+          };
         }, function(err) { throw err });
       };
 

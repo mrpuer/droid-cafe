@@ -47,8 +47,8 @@ cafeAPIv1.put('/clients/:email', client.editClient);
 
 // orders REST API
 cafeAPIv1.post('/orders', orders.addOrder);
-cafeAPIv1.get('/orders/', orders.getAllOrders);
-cafeAPIv1.get('/orders/:clientId', orders.getClientOrders);
+cafeAPIv1.get('/orders/:status', orders.getAllOrders);
+cafeAPIv1.get('/orders/users/:clientId', orders.getClientOrders);
 cafeAPIv1.put('/orders/:id', orders.editOrder);
 cafeAPIv1.delete('/orders/:id', orders.removeOrder);
 

@@ -21,8 +21,10 @@ angular
         var orderData = {};
         orderData.itemId = dish.id;
         orderData.userId = $ctrl.clientInfo._id;
+        orderData.time = Date.now();
         OrdersService.addOrder(orderData).then(function(success) {
           mySocket.emit('newOrder', dish.price);
+          Materialize.toast(`<span class='blue-text'>${dish.title}</span>&nbsp; has been added to your orders`, 5000, 'rounded');
         }, function(err) {
           throw err;
         });

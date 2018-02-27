@@ -6,10 +6,25 @@
       <h2 class="grey-text text-lighten-1">Cooking</h2>
     </div>
 </div>
+
 <div class="row">
-    <div class="col s6">
-      <div data-ng-repeat="order in vm.orders">
-<ul class="collection hoverable" data-ng-if="order.status === 'Ordered'">
+    <div class="col s6 center-align">
+      <h4 data-ng-if="!vm.ordered.orders.length && !vm.orderedLoader" class="white-text">
+        There are no any orders here at this moment.
+      </h4>
+        <div data-ng-if="vm.orderedLoader" class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-red-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+      <div data-ng-repeat="order in vm.ordered.orders">
+<ul class="collection hoverable">
     <li class="collection-item avatar">
       <div class="col s1">
         <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
@@ -28,11 +43,38 @@
     </li>
   </ul>
 </div>
+<div class="s 12 center-align">
+<pagination
+page="vm.pagination.page"
+page-size="vm.pagination.perPage"
+total="vm.ordered.count"
+show-prev-next="true"
+use-simple-prev-next="true"
+dots="...."
+hide-if-empty="true"
+adjacent="2"
+scroll-top="true"
+pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
+</div>
     </div>
 
-    <div class="col s6">
-        <div data-ng-repeat="order in vm.orders">
-            <ul class="collection hoverable" data-ng-if="order.status === 'Cooking'">
+    <div class="col s6 center-align">
+        <h4 data-ng-if="!vm.cooking.orders.length && !vm.cookingLoader" class="white-text">
+          There are no any orders here at this moment.
+        </h4>
+        <div data-ng-if="vm.cookingLoader" class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        <div data-ng-repeat="order in vm.cooking.orders">
+            <ul class="collection hoverable">
                 <li class="collection-item avatar">
                     <div class="col s1">
                   <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
@@ -51,5 +93,18 @@
                 </li>
               </ul>
             </div>
+            <div class="s 12 center-align">
+            <pagination
+page="vm.pagination.page"
+page-size="vm.pagination.perPage"
+total="vm.cooking.count"
+show-prev-next="true"
+use-simple-prev-next="true"
+dots="...."
+hide-if-empty="true"
+adjacent="2"
+scroll-top="true"
+pagination-action="vm.getCooking({ page, perPage: vm.pagination.perPage })" />
+</div>
     </div>
   </div>

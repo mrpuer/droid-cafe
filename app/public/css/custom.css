@@ -1,3 +1,3 @@
-.whole-height {
-    height: 100%;
+.pagination li.active {
+    background-color: #0968a7 !important;
 }

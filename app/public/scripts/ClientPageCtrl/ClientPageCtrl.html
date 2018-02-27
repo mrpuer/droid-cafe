@@ -29,9 +29,11 @@
   </div>
 
   <div data-ng-if="vm.isLogged" class="col s12">
-      <div class="progress" data-ng-if="!vm.clientInfo._id">
+
+      <div data-ng-if="!vm.clientInfo._id" class="progress">
           <div class="indeterminate"></div>
       </div>
+
   <div data-ng-if="vm.clientInfo._id">
   <div class="col s6 center-align"> 
 

@@ -13,6 +13,9 @@
 <h4 class="blue-text text-darken-2 center-align"><i class="material-icons">whatshot</i> Cafe Menu <i class="material-icons">whatshot</i></h4>
 
 <div class="row">
+    <div data-ng-if="!$ctrl.cafeMenu.length" class="progress">
+        <div class="indeterminate"></div>
+    </div>
     <div class="col s12 m6" data-ng-repeat="dish in $ctrl.cafeMenu">
       <div class="card medium">
         <div class="card-image">
@@ -25,12 +28,13 @@
           </span>
         </div>
         <div class="card-content">
-          <p>
-            <div>
-              <h5 class="blue-text">Rating: {{dish.rating}} <span class="right red-text">Price: {{dish.price}}</span></h5>
-              <span class="new badge cyan left" data-badge-caption="{{ingredient}}" data-ng-repeat="ingredient in dish.ingredients track by $index"></span>
+              <div class="col s4">
+                <h5 class="blue-text">Rating: {{dish.rating}}</h5>
+                <h5 class="red-text">Price: {{dish.price}}</h5>
               </div>
-          </p>
+              <div class="col s8">
+              <span class="new badge cyan darken-2 left" data-badge-caption="{{ingredient}}" data-ng-repeat="ingredient in dish.ingredients track by $index"></span>
+              </div>
         </div>
       </div>
     </div>

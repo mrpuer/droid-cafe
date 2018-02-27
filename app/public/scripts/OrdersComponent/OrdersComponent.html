@@ -1,13 +1,42 @@
-<div data-ng-if="$ctrl.isLogged">
-<h4 class="grey-text text-lighten-1" data-ng-if="!$ctrl.clientOrders.length">You are not have any orders</h4>
-<div data-ng-if="$ctrl.clientOrders.length">
+<div data-ng-if="$ctrl.isLogged" class="center-align">
+<h4 class="grey-text text-lighten-1" data-ng-if="!$ctrl.clientOrders.orders.length && !$ctrl.ordersLoader">You are not have any orders</h4>
+
   <h4 class="grey-text text-lighten-1 center-align">Your orders:</h4>
-  <ul data-ng-repeat="order in $ctrl.clientOrders" class="collection hoverable">
+  <div class="col s12">
+      <div data-ng-if="$ctrl.ordersLoader" class="preloader-wrapper center-align big active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+      </div>
+      </div>
+<div data-ng-if="!$ctrl.ordersLoader">
+  <ul data-ng-repeat="order in $ctrl.clientOrders.orders" class="collection hoverable">
       <li class="collection-item avatar">
         <img data-ng-src="{{order.dishInfo.image}}" alt="" class="circle">
         <span class="title blue-grey-text text-darken-4">{{order.dishInfo.title}}</span>
       <p><span class="new badge blue" data-badge-caption="{{order.status}}"></span>
+        <!-- <span class="blue-grey-text text-darken-4">{{$ctrl.orderTimer(order.time) | date: 'mm:ss' }}</span> -->
         </p>
       </li>
       </ul>
+      <div class="s 12 center-align">
+          <pagination
+          page="$ctrl.pagination.page"
+          page-size="$ctrl.pagination.perPage"
+          total="$ctrl.clientOrders.count"
+          show-prev-next="true"
+          use-simple-prev-next="true"
+          dots="...."
+          hide-if-empty="true"
+          adjacent="2"
+          scroll-top="true"
+          pagination-action="$ctrl.getUserOrders({ page, perPage: $ctrl.pagination.perPage })" />
+          </div>
+</div>
 </div>
