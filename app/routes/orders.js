@@ -8,7 +8,8 @@ const orderSchema = mongoose.Schema({
   userId: String,
   itemId: Number,
   status: String,
-  time: String
+  timeOrdered: Number,
+  timeCooking: Number
 });
 
 const Orders = mongoose.model('orders', orderSchema);
@@ -19,7 +20,8 @@ exports.addOrder = (req, res) => {
     userId: req.body.userId,
     itemId: req.body.itemId,
     status: 'Ordered',
-    time: req.body.time
+    timeOrdered: req.body.timeOrdered,
+    timeCooking: 0
   });
   newOrder.save((err, result) => {
     if (err) throw err;

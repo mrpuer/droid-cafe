@@ -1,8 +1,11 @@
+<!-- залогинились, можно показывать заказы -->
 <div data-ng-if="$ctrl.isLogged" class="center-align">
-<h4 class="grey-text text-lighten-1" data-ng-if="!$ctrl.clientOrders.orders.length && !$ctrl.ordersLoader">You are not have any orders</h4>
 
-  <h4 class="grey-text text-lighten-1 center-align">Your orders:</h4>
+  <h3 class="grey-text text-lighten-1 center-align">Your orders:</h3>
+  <!-- проверили заказы, если нет ни одного, сообщаем -->
+  <h4 data-ng-if="!$ctrl.clientOrders.orders.length && !$ctrl.ordersLoader">You are not have any active orders</h4>
   <div class="col s12">
+    <!-- крутим лоадер, пока ждем данные -->
       <div data-ng-if="$ctrl.ordersLoader" class="preloader-wrapper center-align big active">
           <div class="spinner-layer spinner-blue-only">
             <div class="circle-clipper left">
@@ -15,16 +18,39 @@
           </div>
       </div>
       </div>
-<div data-ng-if="!$ctrl.ordersLoader">
-  <ul data-ng-repeat="order in $ctrl.clientOrders.orders" class="collection hoverable">
+      <!-- показывем заказы, если что-то есть -->
+  <ul data-ng-repeat="order in $ctrl.clientOrders.orders" class="collection hoverable blue-grey-text text-darken-4">
       <li class="collection-item avatar">
         <img data-ng-src="{{order.dishInfo.image}}" alt="" class="circle">
-        <span class="title blue-grey-text text-darken-4">{{order.dishInfo.title}}</span>
+        <span class="title">{{order.dishInfo.title}}</span>
       <p><span class="new badge blue" data-badge-caption="{{order.status}}"></span>
-        <!-- <span class="blue-grey-text text-darken-4">{{$ctrl.orderTimer(order.time) | date: 'mm:ss' }}</span> -->
+        <!-- если заказ не завершен, показываем таймер с момента времени заказа -->
+        <span data-ng-if="!$ctrl.isOrderDone(order.status)">
+          <timer start-time="order.timeOrdered" max-time-unit="'minute'" interval="1000">
+          Ordered: {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}
+        </timer>
+      </span><br>
+        <!-- <span data-ng-if="$ctrl.isOrderDone(order.status)">
+          All Time: {{order.timeOrdered | date:'HH:mm:ss'}}
+        </span><br> -->
+
+        <!-- если заказ готовится, показываем таймер со времени начала приготовления -->
+        <span data-ng-if="order.status === 'Cooking'">
+        <timer start-time="order.timeCooking" max-time-unit="'minute'" interval="1000">
+          Cooking Time: {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}
+      </timer>
+    </span>
+    
+    <!-- если заказ выполнен, показываем сколько времени понадобилось на приготовление и сколько времени прошло с момента заказа до момента доставк -->
+    <span data-ng-if="$ctrl.isOrderDone(order.status)">
+        Cooking Time: {{ $ctrl.millisecondsFormat(order.timeCooking) }}<br>
+        All Time: {{ $ctrl.millisecondsFormat(order.timeOrdered) }}
+    </span>
+
         </p>
       </li>
       </ul>
+      <!-- ...и пагинация -->
       <div class="s 12 center-align">
           <pagination
           page="$ctrl.pagination.page"
@@ -38,5 +64,4 @@
           scroll-top="true"
           pagination-action="$ctrl.getUserOrders({ page, perPage: $ctrl.pagination.perPage })" />
           </div>
-</div>
 </div>

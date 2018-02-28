@@ -17,10 +17,14 @@ angular
       };
 
       mySocket.on('orderUptated', function(){
+        vm.orderedLoader = true;
+        vm.cookingLoader = true;
         vm.getOrdered(vm.pagination);
         vm.getCooking(vm.pagination);
       });
       mySocket.on('newOrder', function(){
+        vm.orderedLoader = true;
+        vm.cookingLoader = true;
         vm.getOrdered(vm.pagination);
         vm.getCooking(vm.pagination);
         Materialize.toast(`New order is added!`, 10000, 'rounded');
@@ -37,6 +41,8 @@ angular
                 return order;
               }, function(err) { throw err });
             })
+          } else {
+            vm.ordered = {};
           };
         }, function(err) { throw err });
       };
@@ -52,6 +58,8 @@ angular
                 return order;
               }, function(err) { throw err });
             });
+          } else {
+            vm.cooking = {};
           };
         }, function(err) { throw err });
       };
@@ -63,6 +71,18 @@ angular
             status
           }
         };
+
+        switch (status) {
+          case 'Cooking':
+            newData.change.timeCooking = Date.now();
+            break;
+          case 'Delivering':
+            newData.change.timeCooking = Date.now() - order.timeCooking;
+            break;
+          case 'Done' || 'Problems':
+            newData.change.timeOrdered = Date.now() - order.timeOrdered;
+        };
+
         OrdersService.editOrder(newData).then(function(orderNewData) {
           mySocket.emit('orderUptated');
         }, function(err) { throw err });

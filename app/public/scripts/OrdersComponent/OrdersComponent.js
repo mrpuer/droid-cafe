@@ -20,12 +20,19 @@ angular
         $ctrl.getUserOrders($ctrl.pagination);
       };
 
-      // $ctrl.orderTimer = function(startDate) {
-      //   $interval(function() {
-      //     console.log('interval')
-      //     return Date.now() - startDate;
-      //   }, 1000);
-      // };
+      $ctrl.tests = function(item) {
+        console.log(typeof item);
+      };
+
+      $ctrl.isOrderDone = function(status) {
+        return (status === 'Done' || status === 'Problems');
+      };
+
+      $ctrl.millisecondsFormat = function(millis) {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+      }
 
       mySocket.on('newOrder', function(){
         $ctrl.getUserOrders($ctrl.pagination);
@@ -46,6 +53,8 @@ angular
                 return order;
               }, function(err) {throw err})
             });
+          } else {
+            $ctrl.clientOrders = {};
           }
         }, function(err) {
           throw err;

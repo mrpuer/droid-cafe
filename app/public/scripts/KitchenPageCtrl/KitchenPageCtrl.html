@@ -6,12 +6,14 @@
       <h2 class="grey-text text-lighten-1">Cooking</h2>
     </div>
 </div>
-
+<!-- колонка заказанных блюд -->
 <div class="row">
     <div class="col s6 center-align">
+      <!-- проверили, что если нет заказанных, показываем сообщение -->
       <h4 data-ng-if="!vm.ordered.orders.length && !vm.orderedLoader" class="white-text">
         There are no any orders here at this moment.
       </h4>
+      <!-- пока проверяем, крутим лоадер -->
         <div data-ng-if="vm.orderedLoader" class="preloader-wrapper big active">
             <div class="spinner-layer spinner-red-only">
               <div class="circle-clipper left">
@@ -23,6 +25,7 @@
               </div>
             </div>
           </div>
+          <!-- если есть заказанные, выводим -->
       <div data-ng-repeat="order in vm.ordered.orders">
 <ul class="collection hoverable">
     <li class="collection-item avatar">
@@ -30,12 +33,17 @@
         <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
       </div>
       <div class="col s8">
-        <span class="title">{{order.fullInfo.title}}</span>
+        <span class="title">{{order.fullInfo.title}}</span><br>
+        <!-- показываем время с даты поступления заказа -->
+        <timer start-time="order.timeOrdered" max-time-unit="'minute'" class="blue-grey-text text-darken-4" interval="1000">
+            Ordered: {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.
+          </timer>
       </div>
       <div class="col s3">
       <span class="new badge orange" data-badge-caption="">
         {{order.status}}
       </span><br><br>
+      <!-- кнопка отправки на готовку -->
       <span data-ng-click="vm.changeOrderStatus(order, 'Cooking')" class="new badge green" data-badge-caption="">
           Start Cooking
         </span>
@@ -43,6 +51,7 @@
     </li>
   </ul>
 </div>
+<!-- пагинация левого блока -->
 <div class="s 12 center-align">
 <pagination
 page="vm.pagination.page"
@@ -57,11 +66,13 @@ scroll-top="true"
 pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
 </div>
     </div>
-
+<!-- пошел блок с кукинг блюдами -->
     <div class="col s6 center-align">
+      <!-- проверяем блюда и выводим сообщение, если нет ни одного -->
         <h4 data-ng-if="!vm.cooking.orders.length && !vm.cookingLoader" class="white-text">
           There are no any orders here at this moment.
         </h4>
+        <!-- крутим лоадер пока бд вернет данные -->
         <div data-ng-if="vm.cookingLoader" class="preloader-wrapper big active">
             <div class="spinner-layer spinner-blue-only">
               <div class="circle-clipper left">
@@ -73,6 +84,7 @@ pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
               </div>
             </div>
           </div>
+          <!-- если что-то есть - показываем -->
         <div data-ng-repeat="order in vm.cooking.orders">
             <ul class="collection hoverable">
                 <li class="collection-item avatar">
@@ -80,12 +92,17 @@ pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
                   <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
                   </div>
                   <div class="col s8">
-                  <span class="title">{{order.fullInfo.title}}</span>
+                  <span class="title">{{order.fullInfo.title}}</span><br>
+                  <!-- показываем время с момента начала готовки -->
+                  <timer start-time="order.timeCooking" max-time-unit="'minute'" class="blue-grey-text text-darken-4" interval="1000">
+                      Cooking: {{mminutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.
+                    </timer>
                   </div>
                   <div class="col s3">
                   <span class="new badge blue" data-badge-caption="">
                     {{order.status}}
                   </span><br><br>
+                  <!-- кнопка отправки на доставку -->
                   <span data-ng-click="vm.sendToDelivery(order)" class="new badge green" data-badge-caption="">
                       Dish Done
                     </span>
@@ -93,6 +110,7 @@ pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
                 </li>
               </ul>
             </div>
+            <!-- пагинация пошла -->
             <div class="s 12 center-align">
             <pagination
 page="vm.pagination.page"
