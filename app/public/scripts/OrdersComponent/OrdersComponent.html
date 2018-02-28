@@ -46,6 +46,11 @@
         Cooking Time: {{ $ctrl.millisecondsFormat(order.timeCooking) }}<br>
         All Time: {{ $ctrl.millisecondsFormat(order.timeOrdered) }}
     </span>
+<!-- если проблемы при доставки, показываем кнопки действия с заказом
+    <span data-ng-if="$order.status === 'Problems'">
+        <a data-ng-click="$ctrl.reorder(order)" class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Reorder</a> 
+        <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Cancel</a>
+    </span> -->
 
         </p>
       </li>
