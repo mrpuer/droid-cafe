@@ -6,27 +6,31 @@ angular
       vm.cooking = {};
       vm.orderedLoader = true;
       vm.cookingLoader = true;
-      vm.pagination = {
+      vm.pagOrdered = {
+        page: 1,
+        perPage: 5
+      }
+      vm.pagCooking = {
         page: 1,
         perPage: 5
       }
 
       vm.$onInit = function() {
-        vm.getOrdered(vm.pagination);
-        vm.getCooking(vm.pagination);
+        vm.getOrdered(vm.pagOrdered);
+        vm.getCooking(vm.pagCooking);
       };
 
       mySocket.on('orderUptated', function(){
         vm.orderedLoader = true;
         vm.cookingLoader = true;
-        vm.getOrdered(vm.pagination);
-        vm.getCooking(vm.pagination);
+        vm.getOrdered(vm.pagOrdered);
+        vm.getCooking(vm.pagCooking);
       });
       mySocket.on('newOrder', function(){
         vm.orderedLoader = true;
         vm.cookingLoader = true;
-        vm.getOrdered(vm.pagination);
-        vm.getCooking(vm.pagination);
+        vm.getOrdered(vm.pagOrdered);
+        vm.getCooking(vm.pagCooking);
         Materialize.toast(`New order is added!`, 10000, 'rounded');
       });
 

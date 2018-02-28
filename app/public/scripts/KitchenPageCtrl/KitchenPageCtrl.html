@@ -32,14 +32,14 @@
       <div class="col s1">
         <img data-ng-src="{{order.fullInfo.image}}" alt="" class="circle">
       </div>
-      <div class="col s8">
+      <div class="col s7">
         <span class="title">{{order.fullInfo.title}}</span><br>
         <!-- показываем время с даты поступления заказа -->
         <timer start-time="order.timeOrdered" max-time-unit="'minute'" class="blue-grey-text text-darken-4" interval="1000">
             Ordered: {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.
           </timer>
       </div>
-      <div class="col s3">
+      <div class="col s4">
       <span class="new badge orange" data-badge-caption="">
         {{order.status}}
       </span><br><br>
@@ -54,8 +54,8 @@
 <!-- пагинация левого блока -->
 <div class="s 12 center-align">
 <pagination
-page="vm.pagination.page"
-page-size="vm.pagination.perPage"
+page="vm.pagOrdered.page"
+page-size="vm.pagOrdered.perPage"
 total="vm.ordered.count"
 show-prev-next="true"
 use-simple-prev-next="true"
@@ -63,7 +63,7 @@ dots="...."
 hide-if-empty="true"
 adjacent="2"
 scroll-top="true"
-pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
+pagination-action="vm.getOrdered({ page, perPage: vm.pagOrdered.perPage })" />
 </div>
     </div>
 <!-- пошел блок с кукинг блюдами -->
@@ -113,8 +113,8 @@ pagination-action="vm.getOrdered({ page, perPage: vm.pagination.perPage })" />
             <!-- пагинация пошла -->
             <div class="s 12 center-align">
             <pagination
-page="vm.pagination.page"
-page-size="vm.pagination.perPage"
+page="vm.pagCooking.page"
+page-size="vm.pagCooking.perPage"
 total="vm.cooking.count"
 show-prev-next="true"
 use-simple-prev-next="true"
@@ -122,7 +122,7 @@ dots="...."
 hide-if-empty="true"
 adjacent="2"
 scroll-top="true"
-pagination-action="vm.getCooking({ page, perPage: vm.pagination.perPage })" />
+pagination-action="vm.getCooking({ page, perPage: vm.pagCooking.perPage })" />
 </div>
     </div>
   </div>
