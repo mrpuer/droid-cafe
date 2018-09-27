@@ -31,9 +31,9 @@ Graduation project for the Netology.ru course _"Node, AngularJS and MongoDB: dev
 3. User get notifications if order status is changed.
 
 **Kitchen Area Features:**
-4. Ordered dishes list.
-6. Cooking dishes list.
-6. Chef can change oerder status to _Start Cooking_ and _Dish Done_.
+1. Ordered dishes list.
+1. Cooking dishes list.
+1. Chef can change oerder status to _Start Cooking_ and _Dish Done_.
 
 **Used tools:**
 + NodeJS
